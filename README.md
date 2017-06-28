@@ -41,4 +41,11 @@ adduser --disabled-password sparkuser
 7) Back on the master, copy spark distribution and conf file to each slave
 
 
+## Access Spark cluster for compute
+1) Interactively query and run code on Spark cluster using `./bin/spark-shell` (Scala) and `./bin/pyspark` (Python).  Good for prototyping and debugging
+2) Submit (long-running) applications to Spark cluster using `./bin/spark-submit`.  You can submit python scripts, and JAR packages (maven is recommended over sbt)
+3) Notebooks like **Zepplin** can access the spark cluster by specifying the spark master URL.  **Jupyter Notebook** can access the spark cluster via pyspark (consider also using the findspark package).
 
+
+## Working with data files and storage
+File can be sent to the spark cluster by using the `SparkContext` class.  There are methods to make the files available on all machines or a subset of machines.  Ideally, data files should be stored on a form of distributed storage (HDFS, AWS S3, Cassandra, MongoDB, MySQL, etc.)
