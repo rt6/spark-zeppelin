@@ -5,33 +5,45 @@
 - Mesos
 - Yarn
 
+## Ports (defaults)
+- Master web UI is `8080`
+- Master listens on `7077` for client jobs and spark slaves
+- Slave web UI is `8081`
+- Slave also uses a random port for ?
+- Master communicates to slave via SSH.  
+- Master URL looks like this  `spark://hostname:7077`
+
 
 ## Setup Standalone mode
 
-1) Download pre-built spark from https://spark.apache.org/downloads.html
-
-2) Untar
+1) Setup Spark Master
 ```sh
+#Download and uncompress pre-built spark from https://spark.apache.org/downloads.html
+wget https://d3kbcqa49mib13.cloudfront.net/spark-2.1.1-bin-hadoop2.7.tgz
 tar -xvzf spark-2.1.1-bin-hadoop2.7.tgz
-```
 
-3) You can start an individual `master` and `slave` by:
-```sh
-sbin\start-master.sh
-sbin\start-slaves.sh  <MASTER_URL>
-```
-The default port for master webUI is `8080` and listening on is `7070`.
-You can get `<MASTER_URL>` from the logs.  It will look like spark://hostname:7070
+# Install java
+sudo apt install openjdk-8-jre-headless
 
-The slave WebUS is port `8081`
-
-4) Create a SSH RSA key pair on the master to use for accessing slaves.  Do not use a password for the private key.  
-```sh
+# Create a SSH RSA key pair on the master to use for accessing slaves.  Do not use a password for the private key.  
 # On Spark Master
 ssh-keygen -t rsa -b 4096 -C "sparkuser" -f ~/.ssh/spark-slave
+
 ```
 
-5) On each slave machine, install java, create a spark user, get the public key from the master, download and uncompress spark distribution.
+2) On Spark Master, create `conf/spark-env.sh` by copying `conf/spark-env.sh.template`.  Export the IP address of the Master so that it can be accessible by the slaves
+```sh
+export SPARK_MASTER_HOST=1.2.3.4
+```
+
+3) Now start the Spark Master
+```sh
+# Start Spark Master:
+sbin\start-master.sh
+```
+
+
+3) Setup for each slave machine
 ```sh
 # On Spark Slave
 
@@ -47,6 +59,10 @@ cat spark-slave.pub >> authorized_keys
 # Download and uncompress spark distrubtion
 wget https://d3kbcqa49mib13.cloudfront.net/spark-2.1.1-bin-hadoop2.7.tgz
 tar -xvzf spark-2.1.1-bin-hadoop2.7.tgz
+
+# Start Spark Slave
+sbin\start-slaves.sh  <MASTER_URL>
+
 ```
 
 
