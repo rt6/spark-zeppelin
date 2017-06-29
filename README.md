@@ -5,11 +5,12 @@
 - Mesos
 - Yarn
 
-## Ports (defaults)
+
+## Ports
 - Master web UI is `8080`
-- Master listens on `7077` for client jobs and spark slaves
+- Master listens on `7077` for job submission and spark slaves
 - Slave web UI is `8081`
-- Slave also uses a random port for ?
+- Slave also uses a random port to talk to the Driver Program (Spark Context)
 - Master communicates to slave via SSH.  
 - Master URL looks like this  `spark://hostname:7077`
 
@@ -27,7 +28,7 @@ sudo apt install openjdk-8-jre-headless
 
 # Create a SSH RSA key pair on the master to use for accessing slaves.  Do not use a password for the private key.  
 # On Spark Master
-ssh-keygen -t rsa -b 4096 -C "sparkuser" -f ~/.ssh/spark-slave
+ssh-keygen -t rsa -b 4096 -C "spark-slave" -f ~/.ssh/spark-slave
 
 ```
 
@@ -40,6 +41,7 @@ export SPARK_MASTER_HOST=1.2.3.4
 ```sh
 # Start Spark Master:
 sbin\start-master.sh
+
 ```
 
 
@@ -61,12 +63,10 @@ wget https://d3kbcqa49mib13.cloudfront.net/spark-2.1.1-bin-hadoop2.7.tgz
 tar -xvzf spark-2.1.1-bin-hadoop2.7.tgz
 
 # Start Spark Slave
-sbin\start-slaves.sh  <MASTER_URL>
+sbin\start-slave.sh  <MASTER_URL and PORT>
 
 ```
 
-
-7) Back on the master, copy spark distribution and conf file to each slave
 
 ## Resilient Distributed Datasets (RDD)
 - in-memory
