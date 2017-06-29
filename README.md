@@ -11,12 +11,12 @@
 1) Download pre-built spark from https://spark.apache.org/downloads.html
 
 2) Untar
-```
+```sh
 tar -xvzf spark-2.1.1-bin-hadoop2.7.tgz
 ```
 
 3) You can start an individual `master` and `slave` by:
-```
+```sh
 sbin\start-master.sh
 sbin\start-slaves.sh  <MASTER_URL>
 ```
@@ -25,18 +25,30 @@ You can get `<MASTER_URL>` from the logs.  It will look like spark://hostname:70
 
 The slave WebUS is port `8081`
 
-4) Create a SSH RSA key pair to use for accessing slaves.  Do not use a password for the private key.  
-```
-ssh-keygen -t rsa -b 4096 -C "sparkuser" -f ~/.ssh/sparkuser
+4) Create a SSH RSA key pair on the master to use for accessing slaves.  Do not use a password for the private key.  
+```sh
+# On Spark Master
+ssh-keygen -t rsa -b 4096 -C "sparkuser" -f ~/.ssh/spark-slave
 ```
 
-5) On each slave machine, create a new user. Use the same username for all slaves.  eg. sparkuser
-```
+5) On each slave machine, install java, create a spark user, get the public key from the master, download and uncompress spark distribution.
+```sh
+# On Spark Slave
+
+# Install java
+sudo apt install openjdk-8-jre-headless
+
+# create spark user. You may need to create the ~/.ssh directory, and authorized keys file
 adduser --disabled-password sparkuser
 
+# Copy public key from master, and add to slave's authorized key file
+cat spark-slave.pub >> authorized_keys
+
+# Download and uncompress spark distrubtion
+wget https://d3kbcqa49mib13.cloudfront.net/spark-2.1.1-bin-hadoop2.7.tgz
+tar -xvzf spark-2.1.1-bin-hadoop2.7.tgz
 ```
 
-6) Copy public key (from the master) to the `authorized_keys` file on each slave
 
 7) Back on the master, copy spark distribution and conf file to each slave
 
