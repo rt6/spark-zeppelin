@@ -13,7 +13,7 @@
 - Slave also uses a random port to talk to the Driver Program (Spark Context)
 - Master communicates to slave via SSH.  
 - Master URL looks like this  `spark://hostname:7077`
-- Spark context (Drive program) also has a WebUI at port `4040`
+- Spark context (Driver program) also has a WebUI at port `4040`
 
 
 ## Setup Standalone mode
