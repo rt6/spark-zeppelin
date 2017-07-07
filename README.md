@@ -77,7 +77,7 @@ sbin\start-slave.sh  <MASTER_URL and PORT>
 -- see http://training.databricks.com/visualapi.pdf 
 
 ## Access Spark cluster for compute
-1) Interactively query and run code on Spark cluster using `./bin/spark-shell` (Scala) and `./bin/pyspark` (Python).  Good for prototyping and debugging
+1) Interactively query and run code on Spark cluster using `./bin/spark-shell` (Scala) and `./bin/pyspark` (Python) and `./sparkR` (R).  Good for prototyping and debugging
 2) Submit (long-running) applications to Spark cluster using `./bin/spark-submit`.  You can submit python scripts, and JAR packages (maven is recommended over sbt).  Examples https://spark.apache.org/docs/latest/submitting-applications.html
 3) Notebooks like **Zepplin** can access the spark cluster by specifying the spark master URL.  **Jupyter Notebook** can access the spark cluster via pyspark (consider also using the findspark package).
 
