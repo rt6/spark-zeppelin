@@ -1,6 +1,17 @@
 # SPARK
 
+## Key components
+- master and workers
+- driver program and executors
+
+
+## Explaination of key components
+- Applications or interactive shells access the Spark cluster's compute and memory resources via a **Spark Context** object. The application is called the **Driver Program**.  
+- The cluster manager (master) asks worker nodes (slaves) to create executor objects to do computation for job requests from the Driver Program.  
+
+
 ## Cluster Managers
+Standalone is basic and easy to setup.  Mesos has more fine grained and dynamic scheduling of memory/cores, so is good for interactive shells like Jupyter and Zeppelin.  Yarn is integrated with HDFS, and queue based scheduling of resources.
 - Standalone mode
 - Mesos
 - Yarn
@@ -11,9 +22,9 @@
 - Master listens on `7077` for job submission and spark slaves
 - Slave web UI is `8081`
 - Slave also uses a random port to talk to the Driver Program (Spark Context)
-- Master communicates to slave via SSH.  
+- SSH access can be setup between master and slaves to start/stop the cluster using shell script on master (sbin/start-slaves.sh)
 - Master URL looks like this  `spark://hostname:7077`
-- Spark context (Driver program) also has a WebUI at port `4040`
+- Spark context (Driver program) also has a WebUI at port `4040` so you view the event timeline.
 
 
 ## Setup Standalone mode
