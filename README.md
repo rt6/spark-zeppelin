@@ -95,3 +95,39 @@ sbin\start-slave.sh  <MASTER_URL and PORT>
 
 ## Working with data files and storage
 File can be sent to the spark cluster by using the `SparkContext` class.  There are methods to make the files available on all machines or a subset of machines.  Ideally, data files should be stored on a form of distributed storage (HDFS, AWS S3, Cassandra, MongoDB, MySQL, etc.)
+
+### Access Spark Master from Jupyter (Python)
+Install and configure Jupyter to find pyspark package
+```sh
+conda install jupyter
+pip install findspark
+# if spark home directory is in non-standard location
+# check if spark home has already been declared
+echo $SPARK_HOME
+# export spark home so findspark can find it
+export SPARK_HOME=/path/to/spark-home-dir
+```
+
+Python code to connect to spark
+```python
+import findspark
+findspark.init()
+import pyspark
+from pyspark.conf import SparkConf
+conf = SparkConf()
+# your app name. This will appear on the spark master UI
+conf.setAppName("test-1")
+# the url of the spark master
+conf.setMaster("spark://X.X.X.X:7077")
+# number of workers
+conf.set("spark.executor.instances", "10")
+#number of cores per worker
+conf.set("spark.cores.max", "2")
+# amount of memory for each worker
+conf.set("spark.executor.memory", "4g")
+# connect to spark cluster
+sc = pyspark.SparkContext(conf=conf)
+# disconnect from spark cluster
+sc.stop()
+```
+
